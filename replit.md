@@ -2,10 +2,10 @@
 
 ## Overview
 
-MasseurMatch is a Next.js-based web application designed to connect professional massage therapists with clients. The application features a visually striking landing page with 3D graphics, particle effects, and smooth animations to create an immersive user experience. Built with TypeScript and modern React patterns, it serves as a platform for discovering elite massage professionals powered by AI technology.
+MasseurMatch is a Next.js-based web application designed to connect professional massage therapists with clients. The application features a minimalist Grok X.AI-inspired monochromatic landing page with 3D graphics and smooth animations. Built with TypeScript and modern React patterns using only blacks, grays, and whites - no colorful elements. The design emphasizes depth through lighting, texture, and motion rather than color.
 
 **Last Updated:** October 7, 2025  
-**Status:** Premium landing page complete - Production-ready ($10k tier design)
+**Status:** Grok X.AI-inspired monochromatic design - Production-ready
 
 ## User Preferences
 
@@ -25,24 +25,33 @@ Preferred communication style: Simple, everyday language.
 - API routes located in `pages/api/` for backend functionality
 - Component organization in dedicated `components/` folder
 
-**Styling Strategy: Tailwind CSS**
-- **Problem**: Need for rapid UI development with consistent design system
-- **Solution**: Tailwind CSS with custom theme extensions
-- **Custom Design Tokens**:
-  - Colors: `accent` (#B393D3), `gold` (#F5C16C), `dark` (#0C0C0C)
-  - Custom font family: Rowland
-  - Extended box shadows for glow effects
-- **Rationale**: Utility-first CSS enables fast prototyping while maintaining design consistency
+**Styling Strategy: Tailwind CSS with Grok Monochrome Palette**
+- **Problem**: Need for Grok X.AI-inspired minimalist monochromatic design
+- **Solution**: Tailwind CSS with custom Grok color tokens (blacks, grays, whites only)
+- **Grok Color Palette**:
+  - `grok-black` (#050505) - Deepest background
+  - `grok-darkest` (#0A0A0B) - Dark elements
+  - `grok-dark` (#111118) - Card backgrounds
+  - `grok-card` (#16161D) - Interactive cards
+  - `grok-gray` (#1A1A22) - Secondary backgrounds
+  - `grok-border` (#2E2E3B) - Borders and dividers
+  - `grok-muted` (#5B5F72) - Muted accents
+  - `grok-text` (#8A8FA3) - Secondary text
+  - `grok-light` (#E6E8EE) - Light text
+  - `grok-white` (#F7F7FA) - Primary text and highlights
+- **No Colorful Elements**: All emojis replaced with monochrome symbols (•, ●, ○, ★, ✓)
+- **Rationale**: Strict monochromatic design achieves visual hierarchy through typography, spacing, and motion instead of color
 
 ### 3D Graphics & Animation Layer
 
 **Three.js Integration via React Three Fiber**
-- **Problem**: Need for sophisticated 3D visual effects without heavy performance overhead
+- **Problem**: Need for sophisticated 3D visual effects in strict monochrome
 - **Solution**: React Three Fiber (@react-three/fiber) with Drei helpers (@react-three/drei)
 - **Components**:
-  - `HologramOrb`: Distorted sphere with metallic material and auto-rotation
-  - `ParticleField`: 300-particle system with slow rotation animation
-- **Rationale**: Declarative 3D rendering in React keeps code maintainable while leveraging WebGL performance
+  - Metallic charcoal orb (#2E2E3B) with high metalness (0.95)
+  - Distorted sphere with grayscale filter (filter: grayscale(100%))
+  - Reduced opacity (20%) for subtle background presence
+- **Rationale**: 3D elements add depth without breaking monochromatic constraint through grayscale filtering
 
 **Animation Framework: Framer Motion**
 - **Problem**: Need for smooth, physics-based animations for UI elements
@@ -68,16 +77,18 @@ Preferred communication style: Simple, everyday language.
 
 ### Visual Design System
 
-**Color Palette**
-- Primary: Purple/Fuchsia gradient (#B393D3 accent)
-- Secondary: Amber/Gold (#F5C16C)
-- Background: Deep black with radial gradient
+**Monochromatic Design System**
+- Background: Pure black (#050505) - no gradients
+- Text Hierarchy: White (#F7F7FA) → Light (#E6E8EE) → Gray (#8A8FA3) → Muted (#5B5F72)
+- Interactive Elements: White on dark, with subtle gray borders
+- No color accents - depth achieved through shadows, borders, and opacity
 
-**Animation Patterns**
-- Continuous glow pulse on heading (3s cycle)
-- Particle rotation (0.0005 rad/frame)
-- Orb auto-rotation (0.8 speed)
-- Text shadow morphing between purple and gold
+**Animation Patterns** 
+- Typewriter text animation (40ms per character)
+- Card entrance stagger (50ms delay per card)
+- Hover lift animations (scale + translate)
+- Smooth fade transitions (300-800ms)
+- Pulse animations on status indicators
 
 ## External Dependencies
 

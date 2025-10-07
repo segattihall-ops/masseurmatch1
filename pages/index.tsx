@@ -27,11 +27,11 @@ const Home: NextPage = () => {
   }, []);
 
   const prompts = [
-    "🏙️ Top masseurs near you",
-    "✨ Luxury spa partners",
-    "🌙 Book last-minute session",
-    "🌟 Client favorites nearby",
-    "💆‍♂️ Exclusive deals this week",
+    "• Top masseurs near you",
+    "• Luxury spa partners",
+    "• Book last-minute session",
+    "• Client favorites nearby",
+    "• Exclusive deals this week",
   ];
 
   const cities = ["All Cities", "Dallas, TX", "Austin, TX", "Los Angeles, CA", "New York, NY", "Miami, FL"];
@@ -58,33 +58,29 @@ const Home: NextPage = () => {
   });
 
   return (
-    <main className="relative min-h-screen bg-[#0A0A0B] text-white overflow-x-hidden">
+    <main className="relative min-h-screen bg-grok-black text-grok-white overflow-x-hidden">
       <Head>
         <title>MasseurMatch - Elite Massage Professionals Nationwide</title>
         <meta name="description" content="Find verified, top-rated massage therapists near you. Book instantly." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* Animated Gradient Mesh Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0B] via-[#1a0e2e] to-[#0A0A0B]"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#9D4EDD] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#00D9FF] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse delay-1000"></div>
-      </div>
+      {/* Monochrome Background */}
+      <div className="fixed inset-0 z-0 bg-grok-black"></div>
 
-      {/* 3D Hologram Orb */}
-      <div className="fixed inset-0 z-0 opacity-30 pointer-events-none">
+      {/* 3D Metallic Charcoal Orb */}
+      <div className="fixed inset-0 z-0 opacity-20 pointer-events-none">
         <Canvas camera={{ position: [0, 0, 5] }}>
-          <ambientLight intensity={1.5} />
-          <pointLight position={[10, 10, 10]} intensity={1} />
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} intensity={0.8} />
           <Sphere args={[2, 100, 200]} scale={1.3}>
             <MeshDistortMaterial
-              color="#9D4EDD"
+              color="#2E2E3B"
               attach="material"
               distort={0.5}
               speed={1.5}
               roughness={0.1}
-              metalness={0.9}
+              metalness={0.95}
             />
           </Sphere>
         </Canvas>
@@ -100,12 +96,10 @@ const Home: NextPage = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h1 className="text-7xl sm:text-9xl font-bold mb-6 tracking-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F5F5F5] via-[#00D9FF] to-[#9D4EDD] animate-pulse">
-              MasseurMatch
-            </span>
+          <h1 className="text-7xl sm:text-9xl font-bold mb-6 tracking-tight text-grok-white">
+            MasseurMatch
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-xl text-grok-text max-w-2xl mx-auto">
             AI-powered platform connecting you with elite massage professionals nationwide
           </p>
         </motion.div>
@@ -117,15 +111,15 @@ const Home: NextPage = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="max-w-3xl mx-auto mb-8"
         >
-          <div className="bg-[#121416]/80 backdrop-blur-xl border border-[#9D4EDD]/30 rounded-3xl p-6 shadow-[0_0_50px_rgba(157,78,221,0.15)]">
+          <div className="bg-grok-card/80 backdrop-blur-xl border border-grok-border rounded-3xl p-6 shadow-grok-card">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#00D9FF] to-[#9D4EDD] flex items-center justify-center flex-shrink-0">
-                <span className="text-lg">🤖</span>
+              <div className="w-10 h-10 rounded-full bg-grok-gray flex items-center justify-center flex-shrink-0">
+                <span className="text-lg text-grok-white">AI</span>
               </div>
               <div className="flex-1 min-h-[28px]">
-                <p className="text-gray-200 text-lg">{text}</p>
+                <p className="text-grok-light text-lg">{text}</p>
                 {isTyping && (
-                  <span className="inline-block w-1 h-5 bg-[#00D9FF] ml-1 animate-pulse"></span>
+                  <span className="inline-block w-1 h-5 bg-grok-white ml-1 animate-pulse"></span>
                 )}
               </div>
             </div>
@@ -142,8 +136,8 @@ const Home: NextPage = () => {
                 onClick={() => setSelectedPrompt(prompt)}
                 className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                   selectedPrompt === prompt
-                    ? 'bg-gradient-to-r from-[#00D9FF] to-[#9D4EDD] text-black shadow-[0_0_20px_rgba(0,217,255,0.5)]'
-                    : 'bg-[#1A1C1E]/60 border border-[#9D4EDD]/20 text-gray-300 hover:border-[#00D9FF]/50 hover:shadow-[0_0_15px_rgba(0,217,255,0.2)]'
+                    ? 'bg-grok-white text-grok-black shadow-grok-glow'
+                    : 'bg-grok-card/60 border border-grok-border text-grok-light hover:border-grok-muted hover:bg-grok-gray/50'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -156,14 +150,14 @@ const Home: NextPage = () => {
 
         {/* Location & Filters Bar */}
         <div className="max-w-5xl mx-auto mb-12">
-          <div className="flex flex-wrap gap-4 items-center justify-between bg-[#121416]/60 backdrop-blur-lg border border-[#9D4EDD]/20 rounded-2xl p-4">
+          <div className="flex flex-wrap gap-4 items-center justify-between bg-grok-card/60 backdrop-blur-lg border border-grok-border rounded-2xl p-4">
             {/* Location Selector */}
             <div className="flex items-center gap-3">
-              <span className="text-2xl">📍</span>
+              <span className="text-xl text-grok-muted">●</span>
               <select 
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="bg-[#1A1C1E] border border-[#9D4EDD]/30 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#00D9FF] transition-colors cursor-pointer"
+                className="bg-grok-gray border border-grok-border rounded-xl px-4 py-2 text-grok-white focus:outline-none focus:border-grok-muted transition-colors cursor-pointer"
               >
                 {cities.map(city => (
                   <option key={city} value={city}>{city}</option>
@@ -174,9 +168,9 @@ const Home: NextPage = () => {
             {/* Filter Buttons */}
             <div className="flex gap-2">
               {[
-                { id: 'all', label: 'All', icon: '🔍' },
-                { id: 'available', label: 'Available Now', icon: '✅' },
-                { id: 'top-rated', label: '5★ Rated', icon: '⭐' },
+                { id: 'all', label: 'All', icon: '•' },
+                { id: 'available', label: 'Available Now', icon: '○' },
+                { id: 'top-rated', label: '5★ Rated', icon: '★' },
                 { id: 'verified', label: 'Verified', icon: '✓' }
               ].map(f => (
                 <button
@@ -184,8 +178,8 @@ const Home: NextPage = () => {
                   onClick={() => setFilter(f.id)}
                   className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                     filter === f.id
-                      ? 'bg-gradient-to-r from-[#00D9FF] to-[#9D4EDD] text-black'
-                      : 'bg-[#1A1C1E] text-gray-300 hover:bg-[#252729]'
+                      ? 'bg-grok-white text-grok-black'
+                      : 'bg-grok-gray text-grok-light hover:bg-grok-border'
                   }`}
                 >
                   <span className="mr-1">{f.icon}</span>
@@ -198,7 +192,7 @@ const Home: NextPage = () => {
 
         {/* Featured Professionals Grid */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#9D4EDD]">
+          <h2 className="text-3xl font-bold mb-6 text-grok-white">
             Featured Professionals ({filteredMasseurs.length})
           </h2>
           
@@ -212,47 +206,47 @@ const Home: NextPage = () => {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ delay: idx * 0.05 }}
                   whileHover={{ y: -8, scale: 1.02 }}
-                  className="group relative bg-gradient-to-br from-[#1A1C1E]/80 to-[#121416]/80 backdrop-blur-lg border border-[#9D4EDD]/20 rounded-2xl p-5 hover:border-[#00D9FF]/50 transition-all duration-300 hover:shadow-[0_0_40px_rgba(0,217,255,0.2)] cursor-pointer"
+                  className="group relative bg-grok-card/80 backdrop-blur-lg border border-grok-border rounded-2xl p-5 hover:border-grok-muted transition-all duration-300 hover:shadow-grok-glow cursor-pointer"
                 >
                   {/* Verified Badge */}
                   {m.verified && (
-                    <div className="absolute top-3 right-3 bg-[#00FF88] text-black text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1">
+                    <div className="absolute top-3 right-3 bg-grok-border text-grok-light text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1">
                       ✓ Verified
                     </div>
                   )}
 
                   {/* Profile Image Placeholder */}
                   <div className="relative w-20 h-20 mx-auto mb-4">
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#00D9FF] to-[#9D4EDD] opacity-20 animate-pulse"></div>
-                    <div className="absolute inset-1 rounded-full bg-[#1A1C1E] flex items-center justify-center">
-                      <span className="text-3xl">👨‍⚕️</span>
+                    <div className="absolute inset-0 rounded-full bg-grok-gray opacity-50 animate-pulse"></div>
+                    <div className="absolute inset-1 rounded-full bg-grok-card flex items-center justify-center">
+                      <span className="text-2xl text-grok-white font-bold">{m.name.charAt(0)}</span>
                     </div>
                     {/* Status Indicator */}
-                    <div className={`absolute bottom-0 right-0 w-5 h-5 rounded-full border-2 border-[#1A1C1E] ${
-                      m.status === 'Available' ? 'bg-[#00FF88] shadow-[0_0_10px_rgba(0,255,136,0.8)]' : 'bg-red-500'
+                    <div className={`absolute bottom-0 right-0 w-5 h-5 rounded-full border-2 border-grok-card ${
+                      m.status === 'Available' ? 'bg-grok-white' : 'bg-grok-muted'
                     }`}></div>
                   </div>
 
                   {/* Info */}
-                  <h3 className="text-lg font-bold text-white text-center mb-1">{m.name}</h3>
-                  <p className="text-xs text-gray-400 text-center mb-3">📍 {m.city}</p>
+                  <h3 className="text-lg font-bold text-grok-white text-center mb-1">{m.name}</h3>
+                  <p className="text-xs text-grok-text text-center mb-3">● {m.city}</p>
                   
-                  <div className="bg-[#9D4EDD]/10 rounded-lg px-3 py-2 mb-3 text-center">
-                    <p className="text-sm text-[#9D4EDD] font-semibold">{m.specialty}</p>
+                  <div className="bg-grok-gray/40 rounded-lg px-3 py-2 mb-3 text-center">
+                    <p className="text-sm text-grok-light font-semibold">{m.specialty}</p>
                   </div>
 
                   <div className="flex items-center justify-between text-xs mb-3">
-                    <span className="text-yellow-400 font-semibold">⭐ {m.rating.toFixed(1)}</span>
-                    <span className="text-gray-400">Booked {m.booked}x this week</span>
+                    <span className="text-grok-white font-semibold">★ {m.rating.toFixed(1)}</span>
+                    <span className="text-grok-text">Booked {m.booked}x this week</span>
                   </div>
 
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-gray-400 text-sm">From</span>
-                    <span className="text-[#00D9FF] font-bold text-lg">${m.rate}/hr</span>
+                    <span className="text-grok-text text-sm">From</span>
+                    <span className="text-grok-white font-bold text-lg">${m.rate}/hr</span>
                   </div>
 
                   {/* CTA Button */}
-                  <button className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#00D9FF] to-[#9D4EDD] text-black font-semibold text-sm hover:shadow-[0_0_20px_rgba(0,217,255,0.5)] transition-all duration-300 group-hover:scale-105">
+                  <button className="w-full py-2.5 rounded-xl bg-grok-white text-grok-black font-semibold text-sm hover:bg-grok-light transition-all duration-300 group-hover:scale-105">
                     {m.status === 'Available' ? 'Book Now' : 'Join Waitlist'}
                   </button>
                 </motion.div>
@@ -268,10 +262,10 @@ const Home: NextPage = () => {
           transition={{ delay: 1.5 }}
           className="text-center mt-16 mb-12"
         >
-          <button className="px-12 py-4 rounded-full bg-gradient-to-r from-[#00D9FF] to-[#9D4EDD] text-black text-lg font-bold hover:shadow-[0_0_40px_rgba(0,217,255,0.6)] transition-all duration-300 hover:scale-105">
+          <button className="px-12 py-4 rounded-full bg-grok-white text-grok-black text-lg font-bold hover:bg-grok-light hover:shadow-grok-glow transition-all duration-300 hover:scale-105">
             Join MasseurMatch Today
           </button>
-          <p className="text-gray-500 text-sm mt-4">✨ Free for first 30 days • No credit card required</p>
+          <p className="text-grok-muted text-sm mt-4">• Free for first 30 days • No credit card required</p>
         </motion.div>
       </div>
     </main>
