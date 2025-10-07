@@ -1,0 +1,49 @@
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Canvas } from "@react-three/fiber";
+import { Sphere, MeshDistortMaterial } from "@react-three/drei";
+
+export default function Home() {
+  const [text, setText] = useState("");
+  const [location, setLocation] = useState("Select Location");
+
+  const message =
+    "Hi, I’m your MasseurMatch assistant — want to find someone nearby?";
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setText(message.slice(0, i++));
+      if (i > message.length) clearInterval(interval);
+    }, 40);
+    return () => clearInterval(interval);
+  }, []);
+
+  const prompts = [
+    "Top masseurs near you 🏙️",
+    "Luxury spa partners in your area",
+    "Book a last-minute session 🌙",
+    "Client favorites nearby 🌟",
+    "Exclusive deals this week 💆‍♂️",
+  ];
+
+  const masseurs = [
+    { name: "Alex Rivera", city: "Dallas, TX", status: "Available", rating: 4.9, specialty: "Deep Tissue", rate: 120, image: "/images/alex.png" },
+    { name: "Ethan Park", city: "Austin, TX", status: "Busy", rating: 4.7, specialty: "Sports Massage", rate: 140, image: "/images/ethan.png" },
+    { name: "Leo Santos", city: "San Diego, CA", status: "Available", rating: 5.0, specialty: "Relaxation Massage", rate: 100, image: "/images/leo.png" },
+    { name: "Andre King", city: "Houston, TX", status: "Available", rating: 4.8, specialty: "Swedish Massage", rate: 130, image: "/images/andre.png" },
+    { name: "Marco Silva", city: "Miami, FL", status: "Available", rating: 4.6, specialty: "Hot Stone Therapy", rate: 150, image: "/images/marco.png" },
+    { name: "Ryan Lee", city: "Chicago, IL", status: "Busy", rating: 4.8, specialty: "Reflexology", rate: 110, image: "/images/ryan.png" },
+    { name: "Chris Nolan", city: "Los Angeles, CA", status: "Available", rating: 5.0, specialty: "Thai Massage", rate: 160, image: "/images/chris.png" },
+    { name: "Hugo Mendes", city: "New York, NY", status: "Available", rating: 4.9, specialty: "Therapeutic Massage", rate: 130, image: "/images/hugo.png" },
+    { name: "Victor Chen", city: "San Francisco, CA", status: "Busy", rating: 4.5, specialty: "Aromatherapy", rate: 125, image: "/images/victor.png" },
+    { name: "Mateo Cruz", city: "Phoenix, AZ", status: "Available", rating: 4.8, specialty: "Stretch Therapy", rate: 135, image: "/images/mateo.png" },
+    { name: "Julian Torres", city: "Seattle, WA", status: "Available", rating: 4.7, specialty: "Shiatsu", rate: 120, image: "/images/julian.png" },
+    { name: "Lucas Romero", city: "Atlanta, GA", status: "Available", rating: 4.9, specialty: "Lomi-Lomi", rate: 150, image: "/images/lucas.png" },
+    { name: "Ben Garcia", city: "Las Vegas, NV", status: "Available", rating: 4.6, specialty: "Prenatal Massage", rate: 115, image: "/images/ben.png" },
+    { name: "Noah Brooks", city: "Denver, CO", status: "Busy", rating: 4.8, specialty: "Trigger Point Therapy", rate: 145, image: "/images/noah.png" },
+    { name: "Adrian Silva", city: "Orlando, FL", status: "Available", rating: 5.0, specialty: "Couples Massage", rate: 170, image: "/images/adrian.png" },
+  ];
+
+  return (
+    <main className="relative min-h-screen flex flex-col items-center justify
