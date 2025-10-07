@@ -1,0 +1,81 @@
+run:
+
+npm install three @react-three/fiber @react-three/drei
+
+
+These let you embed 3D objects directly inside your React components — no heavy GPU scripting required.
+
+🪩 Step 2 — Create the 3D Orb Component
+
+Inside your components folder, create a new file:
+
+📄 components/HologramOrb.js
+
+Paste this:
+
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
+
+export default function HologramOrb() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center z-0 opacity-40">
+      <Canvas camera={{ position: [0, 0, 3] }}>
+        <ambientLight intensity={1.2} />
+        <pointLight position={[10, 10, 10]} />
+        <Sphere args={[1.5, 100, 200]} scale={1.2}>
+          <MeshDistortMaterial
+            color="#b393d3"
+            attach="material"
+            distort={0.5}
+            speed={2.5}
+            roughness={0.2}
+            metalness={1}
+          />
+        </Sphere>
+        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.8} />
+      </Canvas>
+    </div>
+  );
+}
+
+
+🧠 What it does:
+
+Creates a soft glowing orb using mesh distortion (moves organically, not rigid).
+
+Has a metallic purple sheen with slow rotation and light shimmer.
+
+Uses opacity-40 so it sits subtly behind your text, not distracting.
+
+✨ Step 3 — Add It to Your Homepage
+
+Open pages/index.js and import both the header and the orb.
+
+import FancyHeader from "../components/FancyHeader";
+import HologramOrb from "../components/HologramOrb";
+
+export default function Home() {
+  return (
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-center overflow-hidden">
+      <HologramOrb />
+      <div className="z-10">
+        <FancyHeader />
+        <p className="text-gray-400 mt-6 max-w-md mx-auto">
+          Discover elite massage professionals near you — powered by AI.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+💎 Step 4 — Optional: Add a Soft Gradient Halo
+
+In your globals.css, add this at the bottom for a subtle halo effect behind the orb:
+
+body {
+  background: radial-gradient(circle at center, #090909 30%, #000000 100%);
+}
+
+canvas {
+  filter: blur(0px) saturate(130%) brightness(105%);
+}
