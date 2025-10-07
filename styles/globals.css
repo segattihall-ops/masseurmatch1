@@ -1,1 +1,22 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-dark text-white font-rowland;
+  background: radial-gradient(circle at center, #0b0b0b 30%, #000 100%);
+  overflow: hidden;
+}
+
+canvas {
+  filter: blur(0px) saturate(120%) brightness(105%);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { filter: drop-shadow(0 0 10px #b393d3); }
+  50% { filter: drop-shadow(0 0 25px #f5c16c); }
+}
+
+h1 {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
