@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 body {
-  @apply bg-dark text-white font-rowland;
-  background: radial-gradient(circle at center, #0b0b0b 30%, #000 100%);
+  @apply text-white;
+  font-family: Rowland, sans-serif;
   overflow: hidden;
 }
 

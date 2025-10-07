@@ -6,7 +6,7 @@ import ParticleField from "../components/ParticleField";
 
 const Home: NextPage = () => {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-center overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-hidden" style={{ background: 'radial-gradient(circle at center, #0b0b0b 30%, #000 100%)' }}>
       <Head>
         <title>MasseurMatch</title>
         <meta name="description" content="Connecting professional masseurs with clients across the nation" />
