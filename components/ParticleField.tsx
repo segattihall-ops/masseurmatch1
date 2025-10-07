@@ -2,7 +2,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 
 function Particles() {
-  const group = useRef<any>();
+  const group = useRef<any>(null);
   const particles = Array.from({ length: 300 }, () => ({
     position: [
       (Math.random() - 0.5) * 8,
