@@ -3,29 +3,26 @@ import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import { Sphere, MeshDistortMaterial } from "@react-three/drei";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+interface Message {
+  id: string;
+  text: string;
+  sender: 'user' | 'ai';
+  typing?: boolean;
+}
 
 const Home: NextPage = () => {
-  const [text, setText] = useState("");
-  const [isTyping, setIsTyping] = useState(true);
+  const [messages, setMessages] = useState<Message[]>([
+    { id: '1', text: "Hi, I'm your MasseurMatch assistant — want to find someone nearby?", sender: 'ai' }
+  ]);
+  const [inputValue, setInputValue] = useState("");
+  const [isAITyping, setIsAITyping] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
   const [location, setLocation] = useState("All Cities");
   const [filter, setFilter] = useState("all");
+  const chatEndRef = useRef<HTMLDivElement>(null);
   
-  const message = "Hi, I'm your MasseurMatch assistant — want to find someone nearby?";
-
-  useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      setText(message.slice(0, i++));
-      if (i > message.length) {
-        clearInterval(interval);
-        setIsTyping(false);
-      }
-    }, 40);
-    return () => clearInterval(interval);
-  }, []);
-
   const prompts = [
     "• Top masseurs near you",
     "• Luxury spa partners",
@@ -56,6 +53,109 @@ const Home: NextPage = () => {
     if (filter === "verified" && !m.verified) return false;
     return true;
   });
+
+  // AI Response Generator
+  const getAIResponse = (userMessage: string): string => {
+    const lower = userMessage.toLowerCase();
+    
+    if (lower.includes('hello') || lower.includes('hi')) {
+      return "Hello! I'm here to help you find the perfect massage professional. What are you looking for today?";
+    }
+    if (lower.includes('near') || lower.includes('location')) {
+      return `I found ${filteredMasseurs.length} verified professionals in ${location}. Would you like to see available ones or filter by specialty?`;
+    }
+    if (lower.includes('available')) {
+      const available = masseurs.filter(m => m.status === 'Available').length;
+      return `Currently ${available} massage professionals are available for booking. Would you like me to show you the top-rated ones?`;
+    }
+    if (lower.includes('price') || lower.includes('cost')) {
+      return "Our professionals' rates range from $100-160 per hour. You can filter by price range or check individual profiles for exact pricing.";
+    }
+    if (lower.includes('book') || lower.includes('appointment')) {
+      return "To book an appointment, click on any professional's card and select your preferred time slot. All bookings are confirmed instantly!";
+    }
+    if (lower.includes('verified')) {
+      const verified = masseurs.filter(m => m.verified).length;
+      return `${verified} of our professionals are verified. These therapists have completed background checks and certification verification.`;
+    }
+    
+    return "I can help you find massage professionals by location, specialty, availability, or price. What matters most to you?";
+  };
+
+  // Typewriter effect for AI messages
+  const typeMessage = (fullText: string, messageId: string) => {
+    let currentText = "";
+    let index = 0;
+    
+    const interval = setInterval(() => {
+      if (index < fullText.length) {
+        currentText += fullText[index];
+        setMessages(prev => 
+          prev.map(msg => 
+            msg.id === messageId ? { ...msg, text: currentText, typing: true } : msg
+          )
+        );
+        index++;
+      } else {
+        clearInterval(interval);
+        setMessages(prev => 
+          prev.map(msg => 
+            msg.id === messageId ? { ...msg, typing: false } : msg
+          )
+        );
+        setIsAITyping(false);
+      }
+    }, 30);
+
+    return interval;
+  };
+
+  const handleSendMessage = () => {
+    if (!inputValue.trim() || isAITyping) return;
+
+    // Add user message
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: inputValue,
+      sender: 'user'
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue("");
+    setIsAITyping(true);
+
+    // Generate and add AI response with typewriter effect
+    setTimeout(() => {
+      const aiResponse = getAIResponse(inputValue);
+      const aiMessageId = (Date.now() + 1).toString();
+      const aiMessage: Message = {
+        id: aiMessageId,
+        text: "",
+        sender: 'ai',
+        typing: true
+      };
+      
+      setMessages(prev => [...prev, aiMessage]);
+      typeMessage(aiResponse, aiMessageId);
+    }, 500);
+  };
+
+  const handlePromptClick = (prompt: string) => {
+    setSelectedPrompt(prompt);
+    setInputValue(prompt.replace('• ', ''));
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  // Auto scroll to bottom
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
     <main className="relative min-h-screen bg-grok-black text-grok-white overflow-x-hidden">
@@ -94,7 +194,7 @@ const Home: NextPage = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
           <h1 className="text-7xl sm:text-9xl font-bold mb-6 tracking-tight text-grok-white">
             MasseurMatch
@@ -104,47 +204,93 @@ const Home: NextPage = () => {
           </p>
         </motion.div>
 
-        {/* Interactive Chat Box */}
+        {/* Interactive Grok-Style Chatbox */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="max-w-3xl mx-auto mb-8"
+          className="max-w-4xl mx-auto mb-8"
         >
-          <div className="bg-grok-card/80 backdrop-blur-xl border border-grok-border rounded-3xl p-6 shadow-grok-card">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-grok-gray flex items-center justify-center flex-shrink-0">
-                <span className="text-lg text-grok-white">AI</span>
-              </div>
-              <div className="flex-1 min-h-[28px]">
-                <p className="text-grok-light text-lg">{text}</p>
-                {isTyping && (
-                  <span className="inline-block w-1 h-5 bg-grok-white ml-1 animate-pulse"></span>
-                )}
+          <div className="bg-grok-card/80 backdrop-blur-xl border border-grok-border rounded-3xl shadow-grok-card overflow-hidden">
+            {/* Chat Messages */}
+            <div className="h-80 overflow-y-auto p-6 space-y-4">
+              {messages.map((msg) => (
+                <motion.div
+                  key={msg.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`flex items-start gap-3 max-w-[80%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                    {/* Avatar */}
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      msg.sender === 'ai' ? 'bg-grok-gray' : 'bg-grok-border'
+                    }`}>
+                      <span className="text-sm text-grok-white font-semibold">
+                        {msg.sender === 'ai' ? 'AI' : 'You'}
+                      </span>
+                    </div>
+                    
+                    {/* Message Bubble */}
+                    <div className={`rounded-2xl px-4 py-3 ${
+                      msg.sender === 'ai' 
+                        ? 'bg-grok-gray/50 text-grok-light' 
+                        : 'bg-grok-white text-grok-black'
+                    }`}>
+                      <p className="text-base leading-relaxed">
+                        {msg.text}
+                        {msg.typing && (
+                          <span className="inline-block w-0.5 h-4 bg-grok-white ml-1 animate-pulse"></span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+              <div ref={chatEndRef} />
+            </div>
+
+            {/* Quick Prompts */}
+            <div className="px-6 pb-4 border-t border-grok-border pt-4">
+              <div className="flex flex-wrap gap-2">
+                {prompts.map((prompt, idx) => (
+                  <button
+                    key={prompt}
+                    onClick={() => handlePromptClick(prompt)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+                      selectedPrompt === prompt
+                        ? 'bg-grok-white text-grok-black'
+                        : 'bg-grok-gray/60 text-grok-light hover:bg-grok-border'
+                    }`}
+                  >
+                    {prompt}
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
 
-          {/* Quick Prompt Pills */}
-          <div className="flex flex-wrap gap-3 mt-6 justify-center">
-            {prompts.map((prompt, idx) => (
-              <motion.button
-                key={prompt}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 + idx * 0.1 }}
-                onClick={() => setSelectedPrompt(prompt)}
-                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                  selectedPrompt === prompt
-                    ? 'bg-grok-white text-grok-black shadow-grok-glow'
-                    : 'bg-grok-card/60 border border-grok-border text-grok-light hover:border-grok-muted hover:bg-grok-gray/50'
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {prompt}
-              </motion.button>
-            ))}
+            {/* Input Area */}
+            <div className="p-4 border-t border-grok-border bg-grok-darkest/50">
+              <div className="flex gap-3 items-center">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Ask me anything about massage professionals..."
+                  className="flex-1 bg-grok-gray border border-grok-border rounded-xl px-4 py-3 text-grok-white placeholder-grok-muted focus:outline-none focus:border-grok-muted transition-colors"
+                  disabled={isAITyping}
+                />
+                <button
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim() || isAITyping}
+                  className="px-6 py-3 rounded-xl bg-grok-white text-grok-black font-semibold hover:bg-grok-light transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
           </div>
         </motion.div>
 
